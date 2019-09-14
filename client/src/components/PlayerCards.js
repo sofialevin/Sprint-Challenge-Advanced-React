@@ -6,10 +6,13 @@ const PlayerCards = (props) => {
   const [ favorites, setFavorites ] = useLocalStorage("ids", []);
 
     const handleClick = (event) => {
-      setFavorites([...favorites, event.target.parentNode.parentNode.parentNode.parentNode.id])
+      const id = event.target.parentNode.parentNode.parentNode.parentNode.id;
+      favorites.includes(id) ?
+      setFavorites(favorites.filter(function(item){
+        return item !== id
+    }))
+      : setFavorites([...favorites, id])
     }
-
-    console.log(favorites);
   
     return (
       

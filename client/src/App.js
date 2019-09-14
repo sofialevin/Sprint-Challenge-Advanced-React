@@ -21,7 +21,10 @@ class App extends React.Component {
   render() {
     console.log(this.state.players) 
     return (
-      <PlayerCards players={this.state.players} />);
+      <div>
+        <h1>Women's World Cup Players</h1>
+        <PlayerCards players={this.state.players} />
+      </div>);
   }
 }
  
