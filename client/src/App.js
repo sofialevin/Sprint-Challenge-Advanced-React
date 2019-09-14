@@ -1,5 +1,7 @@
 import React from 'react';
 import './App.css';
+import PlayerCards from './components/PlayerCards';
+import 'semantic-ui-css/semantic.min.css';
 
 class App extends React.Component {
   constructor(props) {
@@ -13,22 +15,13 @@ class App extends React.Component {
     fetch("http://localhost:5000/api/players")
       .then(res => res.json())
       .then(players => this.setState({ players: players }))
-      .catch(err => console.log("noooo: ", err));
+      .catch(err => console.log("Error: ", err));
   }
 
   render() {
     console.log(this.state.players) 
     return (
-    <div>
-      {
-        this.state.players.map((player) => <div key={player.id}>
-          <p>{player.name}</p>
-          <p>{player.country}</p>
-          <p>{player.searches}</p>
-          <p>{player.id}</p>
-        </div>)
-      }
-    </div>);
+      <PlayerCards players={this.state.players} />);
   }
 }
  
