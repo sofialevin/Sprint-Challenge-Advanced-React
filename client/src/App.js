@@ -20,7 +20,14 @@ class App extends React.Component {
     console.log(this.state.players) 
     return (
     <div>
-
+      {
+        this.state.players.map((player) => <div key={player.id}>
+          <p>{player.name}</p>
+          <p>{player.country}</p>
+          <p>{player.searches}</p>
+          <p>{player.id}</p>
+        </div>)
+      }
     </div>);
   }
 }
