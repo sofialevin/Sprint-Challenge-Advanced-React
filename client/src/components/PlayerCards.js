@@ -1,44 +1,51 @@
 import React from 'react';
 import { useLocalStorage } from '../hooks/useLocalStorage';
-import { Rating, Card, Icon } from 'semantic-ui-react';
+import { Card } from 'semantic-ui-react';
+import CardComponent from './CardComponent';
+import { useFavorites } from '../hooks/useFavorites';
 
 const PlayerCards = (props) => {
-  const [ favorites, setFavorites ] = useLocalStorage("ids", []);
+  const [ favoritePlayers, setFavoritePlayers ] = useLocalStorage("ids", []);
+  const [ favorites, setFavorites ] = useFavorites(false);
+  const toggleMode = e => {
+    e.preventDefault();
+    setFavorites(!favorites);
+  };
 
     const handleClick = (event) => {
       const id = event.target.parentNode.parentNode.parentNode.parentNode.id;
-      favorites.includes(id) ?
-      setFavorites(favorites.filter(function(item){
+      favoritePlayers.includes(id) ?
+      setFavoritePlayers(favoritePlayers.filter(function(item){
         return item !== id
     }))
-      : setFavorites([...favorites, id])
+      : setFavoritePlayers([...favoritePlayers, id])
     }
-  
-console.log(favorites)
+
 
     return (
-      
-        <Card.Group>
+      <div>
+        <h1>Women's World Cup Players</h1>
+        <div className="favorites">
         {
-          props.players.map((player) => 
-          <Card key={player.id} id={player.id}>
-          <Card.Content>
-            <Card.Header>{player.name} 
-            {
-              favorites.includes(player.id.toString()) ? <Rating icon='heart' onClick={handleClick} defaultRating={1} maxRating={1} /> : <Rating icon='heart' onClick={handleClick} defaultRating={0} maxRating={1} />
-            }
-            </Card.Header>
-            <Card.Meta>{player.country}</Card.Meta>
-          </Card.Content>
-          <Card.Content extra>
-          <a>
-            <Icon name='search' />
-            {player.searches}
-          </a>
-        </Card.Content>       
-          </Card>)
+          favorites ? <p>Show All</p> : <p>Show Favorites</p>
         }
-      </Card.Group>);
+        <div className="favorites_toggle">
+          <div
+            onClick={toggleMode}
+            className={favorites ? 'toggle toggled' : 'toggle'}
+          />
+        </div>
+        </div>
+      <Card.Group>
+        {
+          favorites ? props.players.map((player) => {
+             if (favoritePlayers.includes(player.id.toString())) {
+               return <CardComponent player={player} favorites={favoritePlayers} handleClick={handleClick}/>
+             }
+          }) : props.players.map((player) => <CardComponent player={player} favorites={favoritePlayers} handleClick={handleClick}/>)
+        }
+      </Card.Group>
+      </div>)
 }
  
 export default PlayerCards;
